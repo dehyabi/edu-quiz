@@ -1,4 +1,4 @@
-# OpenQuiz Generator
+# Edu-Quiz
 
 Generate educational quizzes from any input text, URL, or file using AI (powered by Gemini).
 
