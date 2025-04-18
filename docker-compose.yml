@@ -1,0 +1,51 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CELERY_BROKER=${CELERY_BROKER}
+      - DATABASE_URL=postgresql://quizuser:quizpass@db:5432/quizdb
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - db
+    restart: always
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+    restart: always
+
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: quizuser
+      POSTGRES_PASSWORD: quizpass
+      POSTGRES_DB: quizdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  worker:
+    build: .
+    command: celery -A celery_worker.celery worker --loglevel=info
+    depends_on:
+      - redis
+      - db
+    environment:
+      - CELERY_BROKER=${CELERY_BROKER}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=postgresql://quizuser:quizpass@db:5432/quizdb
+    volumes:
+      - .:/app
+    restart: always
+
+volumes:
+  redis-data:
+  pgdata:

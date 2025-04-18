@@ -1,0 +1,9 @@
+flask
+celery
+redis
+python-dotenv
+requests
+gunicorn
+flask-cors
+flask-sqlalchemy
+psycopg2-binary
