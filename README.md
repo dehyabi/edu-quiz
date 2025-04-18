@@ -1,6 +1,6 @@
 # Edu-Quiz
 
-Generate educational quizzes from any input text, URL, or file using AI (powered by Gemini).
+Generate educational quizzes using AI (powered by Gemini).
 
 ## Features
 - Generate quizzes via API
